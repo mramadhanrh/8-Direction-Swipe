@@ -31,6 +31,8 @@ public class Swipe : MonoBehaviour {
     private float swipeThresholdX = 10.0f;
     private float swipeThresholdY = 10.0f;
 
+    private bool isTap;
+
 	// Use this for initialization
 	void Start () {
         instance = this;	
@@ -38,6 +40,20 @@ public class Swipe : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        SwipeManager();
+
+        if (Swipe.Instance.IsSwiping(SwipeDirection.Right))
+            Debug.Log("Swipe Right");
+        else if (Swipe.Instance.IsSwiping(SwipeDirection.Left))
+            Debug.Log("Swipe Left");
+        else if (Swipe.Instance.IsSwiping(SwipeDirection.Up))
+            Debug.Log("Swipe Up");
+        else if (Swipe.Instance.IsSwiping(SwipeDirection.Down))
+            Debug.Log("Swipe Down");
+	}
+
+    void SwipeManager()
+    {
         Direction = SwipeDirection.None;
 
         if (Input.GetMouseButtonDown(0))
@@ -45,7 +61,7 @@ public class Swipe : MonoBehaviour {
             touchPosition = Input.mousePosition;
         }
 
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButton(0) && !isTap)
         {
             Vector2 deltaSwipe = touchPosition - Input.mousePosition;
 
@@ -53,21 +69,28 @@ public class Swipe : MonoBehaviour {
             {
                 //Swipe X Axis
                 Direction |= (deltaSwipe.x < 0) ? SwipeDirection.Right : SwipeDirection.Left;
+                isTap = true;
             }
 
             if (Mathf.Abs(deltaSwipe.y) > swipeThresholdY)
             {
                 //Swipe Y Axis
                 Direction |= (deltaSwipe.y < 0) ? SwipeDirection.Up : SwipeDirection.Down;
+                isTap = true;
             }
         }
-	}
+
+        if (Input.GetMouseButtonUp(0) && isTap)
+        {
+            isTap = false;
+        }
+    }
 
     //Check kalau lagi swipe atau tidak
     public bool IsSwiping(SwipeDirection dir)
     {
         return (Direction & dir) == dir;
-    }?
+    }
 
     //How to Use
     //4 Arah simetris
