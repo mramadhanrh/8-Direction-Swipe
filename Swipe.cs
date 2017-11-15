@@ -4,15 +4,13 @@ using UnityEngine;
 
 public enum SwipeDirection
 {
-    //Enum Permission 0,1,2,4,8,... karena binary coba lihat
     //stackoverflow.com/questions/9811114/why-do-enum-permissions-often-have-0-1-2-4-values
     None = 0,
     Left = 1,
     Right = 2,
     Up = 4,
     Down = 8,
-
-    //untuk membuat akses multiple tinggal tambahkan seperti
+    
     // Right + Up = 2 + 4 = 6 yang hasilnya diagonal kanan atas
     LeftDown = 9,
     LeftUp = 5,
@@ -67,8 +65,9 @@ public class Swipe : MonoBehaviour {
     public bool IsSwiping(SwipeDirection dir)
     {
         return (Direction & dir) == dir;
-    }?
-
+    }
+    
+    //Put In Update || FixedUpdate
     //How to Use
     //4 Arah simetris
         //if (Swipe.Instance.IsSwiping(SwipeDirection.Right))
